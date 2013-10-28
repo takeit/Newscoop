@@ -112,6 +112,11 @@ final class CampContext
             'list' => 'users',
             'url_id' => 'uid',
         ),
+        'newscoop\commentlistsbundle\templatelist\comments' => array(
+            'class' => 'Newscoop\CommentListsBundle\TemplateList\Comments',
+            'list' => 'comments',
+            'url_id' => 'clid',
+        ),
         'communityfeeds' => array(
             'class' => 'CommunityFeeds',
             'list' => 'community_feeds',
