@@ -155,7 +155,6 @@ if ($res !== 0) {
 }
 CampCache::singleton()->clear('user');
 CampCache::singleton()->clear();
-SystemPref::DeleteSystemPrefsFromCache();
 
 //We don't need this step now. 
 // update plugins
