@@ -21,7 +21,7 @@ services:
         arguments:  ["%image%", "@em"]
     attachment:
         class:      Newscoop\Services\AttachmentService
-        arguments:  ["%attachment%", "@em", "@router"]
+        arguments:  ["%attachment%", "@em", "@router", "@user"]
     zend_auth:
         class:      Zend_Auth
         factory_class: Zend_Auth
@@ -198,6 +198,9 @@ services:
     newscoop.cache:
         class: Newscoop\Services\CacheService
         arguments: ["@system_preferences_service"]
+    user.garbage:
+        class: Newscoop\Services\GarbageCollectionService
+        arguments: ["@em"]
     newscoop.filesystem:
         class: Newscoop\Services\FilesystemService
         arguments: ["@em"]
