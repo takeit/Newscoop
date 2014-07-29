@@ -144,8 +144,7 @@ class InstallNewscoopCommand extends Console\Command\Command
         $output->writeln('<info>Database schema has been processed successfully.<info>');
         $demositeService->installEmptyTheme();
         $output->writeln('<info>Empty theme has been installed successfully.<info>');
-        $schedulerService = $container->get('newscoop.scheduler');
-        $finishService->saveCronjobs($schedulerService);
+        $finishService->saveCronjobs($container->get('newscoop.scheduler'));
         $output->writeln('<info>Cronjobs have been saved successfully<info>');
         $finishService->generateProxies();
         $output->writeln('<info>Proxies have been generated successfully<info>');
@@ -157,7 +156,6 @@ class InstallNewscoopCommand extends Console\Command\Command
             'recheck_user_password' => $input->getArgument('user_password')
         ), $connection);
         $output->writeln('<info>Config have been saved successfully.<info>');
-
         $output->writeln('<info>Newscoop is installed.<info>');
     }
 }

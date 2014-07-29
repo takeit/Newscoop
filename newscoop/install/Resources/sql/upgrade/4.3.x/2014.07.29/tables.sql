@@ -1,4 +1,4 @@
-ALTER TABLE  `ArticleImageCaptions` CHANGE  `caption`  `caption` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+ALTER TABLE  `ArticleImageCaptions` CHANGE  `caption`  `caption` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 
 CREATE TABLE IF NOT EXISTS `cron_jobs` (
   `id` int AUTO_INCREMENT NOT NULL,
