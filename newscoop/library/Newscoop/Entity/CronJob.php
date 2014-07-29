@@ -8,7 +8,7 @@
 
 namespace Newscoop\Entity;
 
-use Doctrine\ORM\Mapping AS ORM;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Cron job entity
@@ -20,7 +20,7 @@ class CronJob
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer", name="id")
      * @var int
      */
