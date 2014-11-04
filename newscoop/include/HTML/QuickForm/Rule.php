@@ -71,7 +71,7 @@ class HTML_QuickForm_Rule
      *
      * @param     mixed     Options for the rule
      * @access    public
-     * @return    array     first element is code to setup validation, second is the check itself
+     * @return    string[]     first element is code to setup validation, second is the check itself
      * @abstract
      */
     function getValidationScript($options = null)

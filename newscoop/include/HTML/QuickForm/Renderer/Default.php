@@ -388,6 +388,7 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
      *
      * @param       string      The HTML surrounding an element 
      * @param       string      (optional) Name of the element to apply template for
+     * @param string $html
      * @access      public
      * @return      void
      */
@@ -446,7 +447,8 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     /**
      * Sets form template 
      *
-     * @param     string    The HTML surrounding the form tags 
+     * @param     string    The HTML surrounding the form tags
+     * @param string $html 
      * @access    public
      * @return    void
      */
@@ -458,7 +460,8 @@ class HTML_QuickForm_Renderer_Default extends HTML_QuickForm_Renderer
     /**
      * Sets the note indicating required fields template
      *
-     * @param       string      The HTML surrounding the required note 
+     * @param       string      The HTML surrounding the required note
+     * @param string $html 
      * @access      public
      * @return      void
      */

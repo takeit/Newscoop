@@ -142,6 +142,9 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
         $this->_currentSection = $this->_sectionCount++;
     }
 
+    /**
+     * @param boolean $required
+     */
     function renderElement(&$element, $required, $error) 
     {
         $elObj = $this->_elementToObject($element, $required, $error);

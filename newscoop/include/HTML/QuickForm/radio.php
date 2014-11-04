@@ -195,7 +195,7 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
      * @param     object    &$caller calling object
      * @since     1.0
      * @access    public
-     * @return    void
+     * @return    boolean
      */
     function onQuickFormEvent($event, $arg, &$caller)
     {

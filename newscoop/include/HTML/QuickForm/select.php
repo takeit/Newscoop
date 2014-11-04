@@ -131,7 +131,7 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
      * 
      * @since     1.0
      * @access    public
-     * @return    array of selected values
+     * @return    string of selected values
      */
     function getSelected()
     {
@@ -194,7 +194,7 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
     /**
      * Sets the value of the form element
      *
-     * @param     mixed    $values  Array or comma delimited string of selected values
+     * @param     mixed    $value  Array or comma delimited string of selected values
      * @since     1.0
      * @access    public
      * @return    void
@@ -212,7 +212,7 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
      * 
      * @since     1.0
      * @access    public
-     * @return    array of selected values
+     * @return    string of selected values
      */
     function getValue()
     {
@@ -243,7 +243,7 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
      * 
      * @since     1.0
      * @access    public
-     * @return    int
+     * @return    string|null
      */
     function getSize()
     {

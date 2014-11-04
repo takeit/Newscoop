@@ -197,7 +197,7 @@ class HTML_Common
      * @param     array     $attributes   Array of attribute
      * @since     1.0
      * @access    private
-     * @return    bool
+     * @return    boolean|null
      */
     function _getAttrKey($attr, $attributes)
     {

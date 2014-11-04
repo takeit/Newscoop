@@ -16,7 +16,6 @@ require_once($GLOBALS['g_campsiteDir'].'/classes/CampCacheList.php');
 use Newscoop\Service\Resource\ResourceId;
 use Newscoop\Service\IOutputSettingSectionService;
 use Newscoop\Service\ISectionService;
-use Newscoop\Entity\Output\OutputSettingsSection;
 
 /**
  * @package Campsite
@@ -539,7 +538,6 @@ class Section extends DatabaseObject {
 	 * Return a section number that is not in use.
 	 * @param int $p_publicationId
 	 * @param int $p_issueNumber
-	 * @param int $p_languageId
 	 * @return int
 	 */
 	public static function GetUnusedSectionNumber($p_publicationId, $p_issueNumber)

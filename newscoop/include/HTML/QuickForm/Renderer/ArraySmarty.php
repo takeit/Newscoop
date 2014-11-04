@@ -336,6 +336,7 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
     * So we use the smarty eval plugin function	to do this.
     *
     * @param    string      The template source
+    * @param string $tplSource
     * @access   private
     * @return   void
     */

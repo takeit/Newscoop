@@ -485,6 +485,7 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
     * the block contents on get() a bit differently
     *
     * @param    string  Block name
+    * @param string $block
     * @return   string  Block contents
     */
     function _getTplBlock($block)

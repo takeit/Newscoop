@@ -216,6 +216,9 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
     } // end func renderHeader
 
 
+    /**
+     * @param boolean $required
+     */
     function renderElement(&$element, $required, $error)
     {
         $elAry = $this->_elementToArray($element, $required, $error);

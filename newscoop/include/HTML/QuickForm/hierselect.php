@@ -527,6 +527,7 @@ JAVASCRIPT;
     *
     * @param    array   Options array
     * @param    int     Depth within options array
+    * @param integer $depth
     * @link     http://pear.php.net/bugs/bug.php?id=16603
     * @return   array
     * @access   private
@@ -623,6 +624,7 @@ JAVASCRIPT;
     *
     * @access private
     * @param  string
+    * @param string $str
     * @return string
     */
     function _escapeString($str)

@@ -388,7 +388,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
      * @param     object    &$caller calling object
      * @since     1.0
      * @access    public
-     * @return    void
+     * @return    boolean
      */
     function onQuickFormEvent($event, $arg, &$caller)
     {
@@ -428,6 +428,7 @@ class HTML_QuickForm_group extends HTML_QuickForm_element
     * @param HTML_QuickForm_Renderer    renderer object
     * @param bool                       Whether a group is required
     * @param string                     An error message associated with a group
+    * @param HTML_QuickForm_Renderer_Default $renderer
     * @access public
     * @return void 
     */
