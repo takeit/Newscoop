@@ -166,7 +166,7 @@ class HTML_QuickForm_input extends HTML_QuickForm_element
      * @param     object    &$caller calling object
      * @since     1.0
      * @access    public
-     * @return    void
+     * @return    boolean
      * @throws    
      */
     function onQuickFormEvent($event, $arg, &$caller)

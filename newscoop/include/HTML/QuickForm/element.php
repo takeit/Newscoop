@@ -365,7 +365,7 @@ class HTML_QuickForm_element extends HTML_Common
      * @param     object    &$caller calling object
      * @since     1.0
      * @access    public
-     * @return    void
+     * @return    boolean
      */
     function onQuickFormEvent($event, $arg, &$caller)
     {

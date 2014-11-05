@@ -67,7 +67,7 @@ class HTML_QuickForm_button extends HTML_QuickForm_input
      * Freeze the element so that only its value is returned
      * 
      * @access    public
-     * @return    void
+     * @return    boolean
      */
     function freeze()
     {

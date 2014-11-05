@@ -54,6 +54,7 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
      * 
      * @param     string    $elementLabel   (optional)Label
      * @param     string    $text           (optional)Display text
+     * @param string $elementName
      * @access    public
      * @return    void
      */
@@ -163,7 +164,7 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
      * @param     object    &$caller calling object
      * @since     1.0
      * @access    public
-     * @return    void
+     * @return    boolean
      * @throws    
      */
     function onQuickFormEvent($event, $arg, &$caller)

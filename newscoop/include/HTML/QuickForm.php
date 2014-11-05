@@ -617,7 +617,7 @@ class HTML_QuickForm extends HTML_Common
      * method accepts variable number of parameters, their meaning 
      * and count depending on $element
      *
-     * @param    mixed      $element        element object or type of element to add (text, textarea, file...)
+     * @param    string      $element        element object or type of element to add (text, textarea, file...)
      * @since    1.0
      * @return   HTML_QuickForm_Element     a reference to newly added element
      * @access   public
@@ -1698,7 +1698,7 @@ class HTML_QuickForm extends HTML_Common
     *
     * @access public
     * @since 3.0
-    * @return object a default renderer object
+    * @return HTML_QuickForm_Renderer_Default a default renderer object
     */
     function &defaultRenderer()
     {
@@ -1984,6 +1984,7 @@ class HTML_QuickForm extends HTML_Common
      *
      * @access  public
      * @param   int     error code
+     * @param integer $value
      * @return  string  error message
      * @static
      */

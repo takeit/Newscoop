@@ -99,7 +99,7 @@ class HTML_QuickForm_file extends HTML_QuickForm_input
      * 
      * @since     1.0
      * @access    public
-     * @return    int
+     * @return    string|null
      */
     function getSize()
     {

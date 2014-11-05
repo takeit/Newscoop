@@ -355,7 +355,7 @@ class Article implements DocumentInterface
 
     /**
      * @param int $number
-     * @param Newscoop\Entity\Language $language
+     * @param Language $language
      */
     public function __construct($number, Language $language)
     {
@@ -482,7 +482,7 @@ class Article implements DocumentInterface
     /**
      * Setter for section
      *
-     * @param Newscoop\Entity\Section $section
+     * @param Section $section
      *
      * @return self
      */
@@ -506,8 +506,7 @@ class Article implements DocumentInterface
     /**
      * Set workflowStatus
      *
-     * @param string $status
-     * @return void
+     * @return Article
      */
     public function setWorkflowStatus($workflowStatus)
     {
@@ -540,8 +539,8 @@ class Article implements DocumentInterface
     /**
      * Set language
      *
-     * @param  Newscoop\Entity\Language $p_language
-     * @return Newscoop\Entity\Article
+     * @param  Language $p_language
+     * @return Article
      */
     public function setLanguage(Language $p_language)
     {
@@ -615,7 +614,7 @@ class Article implements DocumentInterface
     /**
      * Get date
      *
-     * @return string
+     * @return DateTime
      */
     public function getDate()
     {
@@ -625,7 +624,7 @@ class Article implements DocumentInterface
     /**
      * Set date
      *
-     * @param DateTime $updated
+     * @param DateTime $date
      * @return void
      */
     public function setDate(DateTime $date)
@@ -668,7 +667,7 @@ class Article implements DocumentInterface
      *
      * @param string $field
      * @param string $value
-     * @return mixed
+     * @return boolean
      */
     public function setFieldData($field, $value)
     {
@@ -732,7 +731,7 @@ class Article implements DocumentInterface
     /**
      * Getter for commentsLocked
      *
-     * @return mixed
+     * @return integer
      */
     public function commentsLocked()
     {
@@ -742,7 +741,7 @@ class Article implements DocumentInterface
     /**
      * Getter for commentsLocked
      *
-     * @return mixed
+     * @return integer
      */
     public function getCommentsLocked()
     {
@@ -784,7 +783,7 @@ class Article implements DocumentInterface
     /**
      * Getter for updated
      *
-     * @return mixed
+     * @return DateTime
      */
     public function getUpdated()
     {
@@ -809,7 +808,7 @@ class Article implements DocumentInterface
     /**
      * Get publishDate
      *
-     * @return string
+     * @return DateTime
      */
     public function getPublishDate()
     {
@@ -819,7 +818,7 @@ class Article implements DocumentInterface
     /**
      * Get published
      *
-     * @return string
+     * @return DateTime
      */
     public function getPublished()
     {
@@ -831,7 +830,7 @@ class Article implements DocumentInterface
      *
      * @param Datetime|null $published
      *
-     * @return string
+     * @return Article
      */
     public function setPublished($published)
     {
@@ -876,7 +875,7 @@ class Article implements DocumentInterface
     /**
      * Set webcode
      *
-     * @param Newscoop\Entity\Webcode $webcode
+     * @param Webcode $webcode
      *
      * @return void
      */
@@ -968,7 +967,7 @@ class Article implements DocumentInterface
     /**
      * Get packages
      *
-     * @return object
+     * @return null|Newscoop\Package\Package
      */
     public function getPackages()
     {
@@ -991,7 +990,7 @@ class Article implements DocumentInterface
     /**
      * Get topics
      *
-     * @return object
+     * @return null|Newscoop\Entity\Topic
      */
     public function getTopics()
     {
@@ -1236,7 +1235,7 @@ class Article implements DocumentInterface
     /**
      * Get view
      *
-     * @return object
+     * @return ArticleView
      */
     public function getView()
     {
@@ -1333,7 +1332,7 @@ class Article implements DocumentInterface
      * 
      * @param Snippet $snippet the Snippet to attach
      *
-     * @return Newscoop\Entity\Article
+     * @return Article
      */
     public function addSnippet(Snippet $snippet)
     {
@@ -1350,7 +1349,7 @@ class Article implements DocumentInterface
      * 
      * @param Snippet $snippet the Snippet to remove
      *
-     * @return Newscoop\Entity\Article
+     * @return Article
      */
     public function removeSnippet(Snippet $snippet)
     {

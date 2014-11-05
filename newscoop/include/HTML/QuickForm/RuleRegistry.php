@@ -138,7 +138,7 @@ class HTML_QuickForm_RuleRegistry
      * @param     mixed    $values          Can be a scalar or an array of values 
      *                                      to be validated
      * @param     mixed    $options         Options used by the rule
-     * @param     mixed    $multiple        Whether to validate an array of values altogether
+     * @param     boolean    $multiple        Whether to validate an array of values altogether
      * @access    public
      * @return    mixed    true if no error found, int of valid values (when an array of values is given) or false if error
      */
@@ -221,6 +221,7 @@ class HTML_QuickForm_RuleRegistry
     *                                   the value
     * @param  integer                   value's index in the array (only used for
     *                                   multielement rules)
+    * @param integer $index
     * @return array     first item is value javascript, second is reset
     */
     function _getJsValue(&$element, $elementName, $reset = false, $index = null)
