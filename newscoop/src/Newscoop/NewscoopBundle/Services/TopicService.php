@@ -16,7 +16,6 @@ use Newscoop\Exception\ResourcesConflictException;
 use Doctrine\ORM\Query;
 use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher as EventDispatcher;
 use Newscoop\EventDispatcher\Events\GenericEvent;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Topcis service
@@ -168,8 +167,6 @@ class TopicService
      * Saves topic position when it was dragged and dropped
      *
      * @param Topic   $node     Dragged topic object
-     * @param int     $parentId Parent of dragged topic
-     * @param boolean $asRoot   If topic is dragged from children to root level
      * @param array   $params   Parameters with positions
      *
      * @return boolean
@@ -456,7 +453,7 @@ class TopicService
      *
      * @param  Topic $topic Topic
      *
-     * @return void
+     * @return boolean
      */
     public function deleteTopic(Topic $topic)
     {

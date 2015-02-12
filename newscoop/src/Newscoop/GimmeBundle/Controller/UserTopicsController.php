@@ -16,8 +16,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Newscoop\NewscoopBundle\Entity\Topic;
-use Newscoop\NewscoopBundle\Form\Type\TopicType;
-use Symfony\Component\HttpFoundation\Response;
 use Newscoop\Exception\InvalidParametersException;
 
 class UserTopicsController extends FOSRestController
