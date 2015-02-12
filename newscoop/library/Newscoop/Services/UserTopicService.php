@@ -16,7 +16,7 @@ use Newscoop\Topic\SaveUserTopicsCommand;
 use Exception;
 
 /**
- * User service
+ * UserTopic service
  */
 class UserTopicService
 {
@@ -68,7 +68,7 @@ class UserTopicService
 
             if ($userTopics) {
                 if (is_array($userTopics)) {
-                    foreach ($userTopics AS $userTopic) {
+                    foreach ($userTopics as $userTopic) {
                         $this->em->remove($userTopic);
                     }
                 } else {

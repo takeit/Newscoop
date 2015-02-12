@@ -68,4 +68,24 @@ class UserTopic
     {
         return $this->topic->getId();
     }
+
+    /**
+     * Gets the value of user.
+     *
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Gets the value of id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }

@@ -2717,9 +2717,8 @@ CREATE TABLE `user_topic` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
   `topic_id` int(11) unsigned NOT NULL,
-  `topic_language` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `user_topic` (`user_id`,`topic_id`,`topic_language`)
+  UNIQUE KEY `user_topic` (`user_id`,`topic_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
