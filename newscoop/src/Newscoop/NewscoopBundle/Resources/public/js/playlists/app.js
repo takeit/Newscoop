@@ -1,10 +1,17 @@
 (function() {
 'use strict';
-var app = angular.module('playlistsApp', ['ngSanitize', 'ui.select', 'ngTable', 'ng-sortable'])
-  .config(function($interpolateProvider, $httpProvider) {
-      $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
-      $httpProvider.interceptors.push('authInterceptor');
+var app = angular.module('playlistsApp', [
+    'ngSanitize',
+    'ui.select',
+    'ngTable',
+    'ng-sortable',
+    'ui.bootstrap',
+    'infinite-scroll'
+]).config(function($interpolateProvider, $httpProvider) {
+    $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+    $httpProvider.interceptors.push('authInterceptor');
 });
+<<<<<<< HEAD
 
 app.directive('loadingContainer', function () {
     return {
@@ -199,7 +206,8 @@ app.controller('PlaylistsController', [
             var item,
                 number,
                 occurences,
-                isInLogList = false;
+                isInLogList = false,
+                limit;
 
             item = evt.model; // the current dragged article
             number = item.number;
@@ -217,6 +225,16 @@ app.controller('PlaylistsController', [
                 return true;
             }
 
+            limit = $scope.playlist.selected.maxItems;
+            if (limit && limit != 0 && $scope.featuredArticles.length > limit) {
+                $scope.featuredArticles.splice(evt.newIndex, 1);
+                flashMessage(Translator.trans(
+                    'List limit reached! Remove some articles from the list before adding new ones.'
+                ), 'error');
+
+                return true;
+            }
+
             isInLogList = _.some(
                 Playlist.getLogList(),
                 {number: number, _method: 'unlink'}
@@ -230,14 +248,12 @@ app.controller('PlaylistsController', [
             } else {
                 Playlist.removeItemFromLogList(number, 'unlink');
             }
-
-            console.log(Playlist.getLogList());
         }
     };
 
     $scope.tableParams = new ngTableParams({
-        page: 1, // show first page
-        count: 5 // count per page
+        //page: 1, // show first page
+        count: 10 // count per page
     }, {
         total: 0,// length of data
         counts: [], // disable page sizes
@@ -273,12 +289,81 @@ app.controller('PlaylistsController', [
         );
 
         if (!exists) {
+            var isInLogList = _.some(
+                Playlist.getLogList(),
+                {number: $scope.articlePreview.number}
+            );
+
+            $scope.articlePreview._method = "link";
+            $scope.articlePreview._order = 1;
+            Playlist.addItemToLogList($scope.articlePreview);
             $scope.featuredArticles.unshift($scope.articlePreview);
             $scope.isViewing = false;
         } else {
             flashMessage(Translator.trans('Item already exists in the list'), 'error');
         }
     };
+
+    /**
+     * Adds article to the playlist from the editor mode
+     */
+    $scope.addArticleToListFromEditor = function (number, language) {
+        var exists = _.some(
+            $scope.featuredArticles,
+            {number: number}
+        );
+
+        if (!exists) {
+            var article = undefined,
+                isInLogList;
+            $scope.processing = true;
+            isInLogList = _.some(
+                Playlist.getLogList(),
+                {number: number}
+            );
+
+            if (!isInLogList) {
+                Playlist.getArticle(number, language).then(function (article) {
+                    article._method = "link";
+                    article._order = 1;
+                    Playlist.addItemToLogList(article);
+                    $scope.featuredArticles.unshift(article);
+                    $scope.processing = false;
+                }, function() {
+                    flashMessage(Translator.trans('Error List'), 'error');
+                });
+
+                return true;
+            }
+        }
+
+        flashMessage(Translator.trans('Item already exists in the list'), 'error');
+    };
+
+    $scope.savePlaylistInEditorMode = function () {
+        var logList = [];
+        $scope.processing = true;
+        logList = Playlist.getLogList();
+        if (logList.length == 0) {
+            flashMessage(Translator.trans('List saved'));
+            $scope.processing = false;
+
+            return true;
+        }
+
+        Playlist.batchUpdate(logList)
+        .then(function () {
+            flashMessage(Translator.trans('List saved'));
+            Playlist.clearLogList();
+            $scope.processing = false;
+        }, function() {
+            flashMessage(Translator.trans('Could not save the list'), 'error');
+        });
+    }
+
+    var page = 2,
+        isRunning = false,
+        isEmpty = false;
 
     /**
      * Sets playlist details to the current scope.
@@ -288,52 +373,43 @@ app.controller('PlaylistsController', [
      * @param  {Object} list  Playlist
      */
     $scope.setPlaylistInfoOnChange = function (list) {
-        $scope.featuredArticles = Playlist.getArticlesByListId(list.id);
+        $scope.featuredArticles = Playlist.getArticlesByListId(list);
         Playlist.setListId(list.id);
         $scope.playlistInfo = list;
+        $scope.playlist.selected.oldLimit = list.maxItems;
         $scope.formData = {title: list.title}
+        page = 2;
+        isRunning = false;
     };
 
     /**
-     * Saves playlist with all articles in it.
-     * It makes batch link or unlink of the articles. It also
-     * saves a proper order of the articles. All list's changes are saved
-     * by clicking Save button.
-     *
-     * @param  {Object} scope Current scope
+     * Loads more playlist's articles on scroll
      */
-    $scope.savePlaylist = function (scope) {
-        var listname = scope.formData.title,
-            logList = [];
-        var playlistExists = _.some(
-            $scope.playlists,
-            {title: listname}
-        );
+    $scope.loadArticlesOnScrollDown = function () {
+        if ($scope.playlist.selected) {
+            if (!isEmpty && !isRunning) {
+                isRunning = true;
+                Playlist.getArticlesByListId($scope.playlist.selected, page).$promise
+                .then(function (response) {
+                    if (response.length == 0) {
+                        isEmpty = true;
+                    } else {
+                        page++;
+                        isEmpty = false;
+                        angular.forEach(response, function(value, key) {
+                            if (value.number !== undefined) {
+                                $scope.featuredArticles.push(value);
+                            }
+                        });
+                    }
 
-        if (!playlistExists) {
-            $scope.playlists.push({title: listname});
-            $scope.playlist.selected = $scope.playlists[$scope.playlists.length - 1];
+                    isRunning = false;
+                });
+            }
         }
-
-        var flash = flashMessage(Translator.trans('Processing', {}, 'messages'), null, true);
-        $scope.processing = true;
-        logList = Playlist.getLogList();
-        if (logList.length == 0) {
-            flashMessage(Translator.trans('Nothing to save'));
-
-            return true;
-        }
-
-        Playlist.batchUpdate(logList)
-        .then(function () {
-            flashMessage(Translator.trans('List saved'));
-            Playlist.clearLogList();
-            flash.fadeOut();
-            $scope.processing = false;
-        }, function() {
-            flashMessage(Translator.trans('Could not save the list'), 'error');
-        });
     }
+
+    $scope.playlist.selected = undefined;
 
     /**
      * Adds new playlist. Sets default list name to current date.
@@ -342,17 +418,13 @@ app.controller('PlaylistsController', [
         var defaultListName,
             currentDate = new Date();
 
+        $scope.playlist.selected = {};
         defaultListName = currentDate.toString();
         Playlist.setCurrentPlaylistArticles([]);
         $scope.featuredArticles = Playlist.getCurrentPlaylistArticles();
+        Playlist.clearLogList();
         $scope.formData.title = defaultListName;
-
-        if ($scope.playlist.selected !== undefined) {
-            $scope.playlistInfo.id = undefined;
-            $scope.playlist.selected = undefined;
-        } else {
-            $scope.playlistInfo = {title: defaultListName, id: undefined};
-        }
+        $scope.playlist.selected = {title: defaultListName, id: undefined};
     }
 
     $scope.publication = {}
@@ -478,19 +550,29 @@ app.controller('PlaylistsController', [
     }
 
     $scope.loadByPublishedBeforeOnChange = function (scope) {
-        var filters = {
-            published_before: scope.filterPublishedBefore + ' 00:00:00'
-        };
+        if (scope.filterPublishedBefore) {
+            var dateTime = scope.filterPublishedBefore + ' 00:00:00';
+            var filters = {
+                published_before: dateTime
+            };
 
-        $scope.tableParams.$params.filter = _.merge($scope.tableParams.$params.filter, filters);
+            $scope.tableParams.$params.filter = _.merge($scope.tableParams.$params.filter, filters);
+        } else {
+            $scope.tableParams.$params.filter.published_before = undefined;
+        }
     }
 
     $scope.loadByPublishedAfterOnChange = function (scope) {
-        var filters = {
-            published_after: scope.filterPublishedAfter + ' 00:00:00'
-        };
+        if (scope.filterPublishedAfter) {
+            var dateTime = scope.filterPublishedAfter + ' 00:00:00';
+            var filters = {
+                published_after: dateTime
+            };
 
-        $scope.tableParams.$params.filter = _.merge($scope.tableParams.$params.filter, filters);
+            $scope.tableParams.$params.filter = _.merge($scope.tableParams.$params.filter, filters);
+        } else {
+            $scope.tableParams.$params.filter.published_after = undefined;
+        }
     }
 
     /**
@@ -565,4 +647,6 @@ app.controller('PlaylistsController', [
         $scope.tableParams.$params.filter = _.merge($scope.tableParams.$params.filter, filters);
     }
 }]);
+=======
+>>>>>>> 1313ee0... playlists app - structure refactoring
 })();

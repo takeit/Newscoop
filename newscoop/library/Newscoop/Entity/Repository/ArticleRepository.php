@@ -150,25 +150,24 @@ class ArticleRepository extends DatatableSource implements RepositoryInterface
     {
         $em = $this->getEntityManager();
 
-        $languageId = $em->getRepository('Newscoop\Entity\Language')
-            ->findOneByCode($articleSearchCriteria->language);
-        if (!$languageId) {
-            throw new NotFoundHttpException('Results with language "'.$language.'" was not found.');
-        }
-
         $queryBuilder = $em->getRepository('Newscoop\Entity\Article')
             ->createQueryBuilder('a')
             ->select('a, FIELD(a.number, :ids) as HIDDEN field')
             ->andWhere('a.number IN (:ids)')
-            ->andWhere('a.language = :language')
             ->leftJoin('a.publication', 'p')
             ->leftJoin('a.issue', 'i')
             ->leftJoin('a.section', 's')
             ->orderBy('field')
             ->setParameters(array(
-                'ids' => $ids,
-                'language' => $languageId
+                'ids' => $ids
             ));
+
+        $languageId = $em->getRepository('Newscoop\Entity\Language')
+            ->findOneByCode($articleSearchCriteria->language);
+        if ($languageId) {
+            $queryBuilder->andWhere('a.language = :language')
+                ->setParameter('language', $languageId);
+        }
 
         if ($articleSearchCriteria->article_type) {
             $queryBuilder->andWhere('a.type = :article_type')
@@ -176,8 +175,14 @@ class ArticleRepository extends DatatableSource implements RepositoryInterface
         }
 
         if ($articleSearchCriteria->publish_date) {
-            $queryBuilder->andWhere('a.published = :publish_date')
-                ->setParameter('publish_date', $articleSearchCriteria->publish_date);
+            $startDate = new \DateTime($articleSearchCriteria->publish_date);
+            $endDate = new \DateTime($articleSearchCriteria->publish_date);
+            $endDate->modify('+ 1 day');
+
+            $queryBuilder->andWhere('a.published >= :publish_date_start')
+                ->setParameter('publish_date_start', $startDate);
+            $queryBuilder->andWhere('a.published < :publish_date_end')
+                ->setParameter('publish_date_end', $endDate);
         }
 
         if ($articleSearchCriteria->published_after) {

@@ -57,16 +57,22 @@ angular.module('playlistsApp').factory('Playlist', [
         * @method getArticlesByListId
         * @return {Object} array of playlists
         */
-        Playlist.getArticlesByListId = function (playlistId) {
+        Playlist.getArticlesByListId = function (playlist, page) {
             var articles = [],
                 deferredGet = $q.defer(),
                 url;
 
             articles.$promise = deferredGet.promise;
 
+            var params = {id: playlist.id};
+
+            if (page !== undefined) {
+            	params.page = page;
+            }
+
             url = Routing.generate(
                 'newscoop_gimme_articleslist_getplaylistsarticles',
-                {id: playlistId, items_per_page: 10},
+                params,
                 true
             );
 
@@ -76,12 +82,32 @@ angular.module('playlistsApp').factory('Playlist', [
                     articles.push(item);
                 });
                 playlistArticles = articles;
-                deferredGet.resolve();
+                deferredGet.resolve(articles);
             }).error(function (responseBody) {
                 deferredGet.reject(responseBody);
             });
 
             return articles;
+        };
+
+        Playlist.getArticle = function (number, language) {
+            var deferredGet = $q.defer(),
+                url;
+
+            url = Routing.generate(
+                'newscoop_gimme_articles_getarticle_language',
+                {number: number, language: language},
+                true
+            );
+
+            $http.get(url)
+            .success(function (response) {
+                deferredGet.resolve(response);
+            }).error(function (responseBody) {
+                deferredGet.reject(responseBody);
+            });
+
+            return deferredGet.promise;
         };
 
         /**
@@ -105,7 +131,6 @@ angular.module('playlistsApp').factory('Playlist', [
            	}
 
            	if (!_.isEmpty(params.filter())) {
-           		console.log(params.filter());
             	requestParams = _.merge(requestParams, params.filter());
         	}
 
@@ -188,6 +213,114 @@ angular.module('playlistsApp').factory('Playlist', [
                 deferred.resolve();
             })
             .error(function (responseBody) {
+                deferred.reject(responseBody);
+            });
+
+            return deferred.promise;
+        };
+
+        /**
+        * Creates new playlist
+
+        * @method createPlaylist
+        * @return {String} playlist name
+        */
+        Playlist.createPlaylist = function (playlist) {
+            var url,
+            	deferred = $q.defer();
+
+            url = Routing.generate(
+                'newscoop_gimme_articleslist_createplaylist'
+            );
+
+            var formData = {
+            	playlist: {
+            		name: playlist.title
+            	}
+            };
+
+            if (playlist.maxItems !== undefined) {
+            	formData.playlist.maxItems = playlist.maxItems;
+            }
+
+            $http({
+	            method: "POST",
+	            url: url,
+	            headers: {
+	                'Content-Type': 'application/x-www-form-urlencoded'
+	            },
+	            data: $.param(formData)
+        	}).success(function (response) {
+        		listId = response.id;
+                deferred.resolve();
+            }).error(function (responseBody) {
+                deferred.reject(responseBody);
+            });
+
+            return deferred.promise;
+        };
+
+        /**
+        * Removes playlist
+
+        * @method createPlaylist
+        * @return {String} playlist name
+        */
+        Playlist.deletePlaylist = function () {
+            var url,
+            	deferred = $q.defer();
+
+            url = Routing.generate(
+                'newscoop_gimme_articleslist_deleteplaylist',
+                {id: listId},
+                true
+            );
+
+            $http.delete(url)
+            .success(function (response) {
+                deferred.resolve();
+            }).error(function (responseBody) {
+                deferred.reject(responseBody);
+            });
+
+            return deferred.promise;
+        };
+
+        /**
+        * Updates playlist
+
+        * @method updatePlaylist
+        * @return {Object} playlist Selected playlist
+        */
+        Playlist.updatePlaylist = function (playlist) {
+            var url,
+            	deferred = $q.defer();
+
+            url = Routing.generate(
+                'newscoop_gimme_articleslist_updateplaylist',
+                {id: playlist.id}
+            );
+
+            var formData = {
+            	playlist: {
+            		name: playlist.title
+            	}
+            };
+
+            if (playlist.maxItems !== undefined) {
+            	formData.playlist.maxItems = playlist.maxItems;
+            }
+
+            $http({
+	            method: "POST",
+	            url: url,
+	            headers: {
+	                'Content-Type': 'application/x-www-form-urlencoded'
+	            },
+	            data: $.param(formData)
+        	}).success(function (response) {
+                deferred.resolve();
+            }).error(function (responseBody) {
                 deferred.reject(responseBody);
             });
 
