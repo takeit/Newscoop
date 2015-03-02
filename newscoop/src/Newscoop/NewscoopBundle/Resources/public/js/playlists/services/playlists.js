@@ -4,8 +4,9 @@ angular.module('playlistsApp').factory('Playlist', [
     '$http',
     '$q',
     '$timeout',
-    function ($http, $q, $timeout) {
-        var Playlist = function () {};  // topic constructor
+    '$filter',
+    function ($http, $q, $timeout, $filter) {
+        var Playlist = function () {};  // Playlist constructor
 
         var listId = undefined,
 			playlistArticles = [],
@@ -176,11 +177,7 @@ angular.module('playlistsApp').factory('Playlist', [
 
             $http({
                 url: Routing.generate(
-<<<<<<< HEAD
-                    'newscoop_gimme_articleslist_getarticleslist',
-=======
                     'newscoop_gimme_articleslist_savebatchactions',
->>>>>>> 7190bd7... dont update ordering of featured articles before save
                     {id: listId},
                     true
                 ),
@@ -196,17 +193,17 @@ angular.module('playlistsApp').factory('Playlist', [
 
 			        // send also datetime to see if playlist is locked by diffrent user
 			        if (playlistDateTime !== undefined) {
-			    		str.push("articlesModificationTime=" + playlistDateTime.toLocaleString());
+			    		str.push("articlesModificationTime=" + $filter('date')(playlistDateTime, 'yyyy-MM-ddTHH:mm:ss'));
 			    	} else {
-			    		str.push("articlesModificationTime=" + now.toLocaleString());
+			    		str.push("articlesModificationTime=" + $filter('date')(now, 'yyyy-MM-ddTHH:mm:ss'));
 			    	}
 
 			        return str.join("&");
 	            },
 	            data: postParams
             })
-            .success(function () {
-                deferred.resolve();
+            .success(function (response) {
+                deferred.resolve(response);
             })
             .error(function (responseBody) {
                 deferred.reject(responseBody);

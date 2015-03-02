@@ -13,9 +13,6 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
-<<<<<<< HEAD
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-=======
 use FOS\RestBundle\View as FOSView;
 use Newscoop\GimmeBundle\Form\Type\PlaylistType;
 use Newscoop\Entity\Playlist;
@@ -28,7 +25,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
->>>>>>> 8605685... small improvements in api
 
 class ArticlesListController extends FOSRestController
 {
@@ -68,8 +64,6 @@ class ArticlesListController extends FOSRestController
     }
 
     /**
-<<<<<<< HEAD
-=======
      * Get Articles List
      *
      * @ApiDoc(
@@ -102,7 +96,6 @@ class ArticlesListController extends FOSRestController
     }
 
     /**
->>>>>>> 8605685... small improvements in api
      * Get list of articles from "playlist"
      *
      * Returns array with articles under "items" key and requested list "id" and "title"
@@ -169,8 +162,6 @@ class ArticlesListController extends FOSRestController
 
         return $allItems;
     }
-<<<<<<< HEAD
-=======
 
     /**
      * Link article to playlist
@@ -620,5 +611,4 @@ class ArticlesListController extends FOSRestController
 
         return $links;
     }
->>>>>>> b7e7b63... playlist service improvements
 }
