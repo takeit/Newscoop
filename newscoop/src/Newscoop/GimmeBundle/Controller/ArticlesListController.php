@@ -377,7 +377,7 @@ class ArticlesListController extends FOSRestController
                     );
                 } catch (\Exception $e) {
                     $actionsResults[$actionKey] = array(
-                        'object' => $e,
+                        'object' => $e->getMessage(),
                         'method' => $method,
                         'header' => $header,
                     );
@@ -452,8 +452,7 @@ class ArticlesListController extends FOSRestController
      *         404="Returned when resource not found"
      *     },
      *     parameters={
-     *         {"name"="id", "dataType"="integer", "required"=true, "description"="Playlist id"},
-     *         {"name"="access_token", "dataType"="string", "required"=false, "description"="Access token"}
+     *         {"name"="id", "dataType"="integer", "required"=true, "description"="Playlist id"}
      *     },
      *     input="\Newscoop\GimmeBundle\Form\Type\PlaylistType"
      * )
