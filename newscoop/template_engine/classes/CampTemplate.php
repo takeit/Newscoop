@@ -120,12 +120,10 @@ final class CampTemplate extends SmartyBC
      */
     private function getTemplateTranslationsFiles()
     {
-        $request = \Zend_Registry::get('container')->getService('request');
         $cacheService = \Zend_Registry::get('container')->getService('newscoop.cache');
         $translator = \Zend_Registry::get('container')->getService('translator');
         $themesService = \Zend_Registry::get('container')->getService('newscoop_newscoop.themes_service');
-        $locale = $request->getLocale();
-
+        $locale = $translator->getLocale();
         $cacheKey = $cacheService->getCacheKey(array('templates_translations', $themesService->getThemePath(), $locale), 'templates_translations');
         $templateTranslations = array();
         if ($cacheService->contains($cacheKey)) {
