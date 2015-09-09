@@ -46,11 +46,6 @@ class LocaleListener
 
     public function onRequest(GetResponseEvent $event)
     {
-        if (!$event->isMasterRequest()) {
-            // don't do anything if it's not the master request
-            return;
-        }
-
         $request = $event->getRequest();
         $pos = strpos($request->server->get('REQUEST_URI'), '/admin');
         $cookies = $request->cookies;
