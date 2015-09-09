@@ -62,6 +62,7 @@ class LocaleListener
 
                 if ($language) {
                     $request->setLocale($language->getCode());
+
                     return;
                 }
             } catch (\Exception $e) {}
