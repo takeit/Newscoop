@@ -46,6 +46,11 @@ class LocaleListener
 
     public function onRequest(GetResponseEvent $event)
     {
+        if (!$event->isMasterRequest()) {
+            // don't do anything if it's not the master request
+            return;
+        }
+
         $request = $event->getRequest();
         $pos = strpos($request->server->get('REQUEST_URI'), '/admin');
         $cookies = $request->cookies;
@@ -54,7 +59,22 @@ class LocaleListener
             $request->setLocale($cookies->get("TOL_Language"));
         }
 
+        // Allow for overriding locale with get parameter
+        if ($request->query->has('__set_lang')) {
+            try {
+                $language = $this->em->getRepository('Newscoop\Entity\Language')
+                    ->findByRFC3066bis($request->query->get('__set_lang'), true);
+
+                if ($language) {
+                    $request->setLocale($language->getCode());
+                    return;
+                }
+            } catch (\Exception $e) {}
+        }
+
+        // if it's not admin
         if ($pos === false) {
+            // try to get locale from issue
             $issueMetadata = $request->attributes->get('_newscoop_issue_metadata');
             $issueLanguageCode = $issueMetadata['code_default_language'];
             if ($issueLanguageCode) {
@@ -63,6 +83,7 @@ class LocaleListener
                 return;
             }
 
+            // try to get locale from publication but only if locale is not in url
             $publicationMetadata = $request->attributes->get('_newscoop_publication_metadata');
             $languageCode = $publicationMetadata['publication']['code_default_language'];
             $locale = $this->extractLocaleFromUri($request->getRequestUri());
@@ -72,6 +93,7 @@ class LocaleListener
                 return;
             }
 
+            // get langauge from url and check if it's valid - if it's then set is as current locale
             $cacheKey = $this->cacheService->getCacheKey(array('resolver', $locale), 'language');
             if ($this->cacheService->contains($cacheKey)) {
                 $language = $this->cacheService->fetch($cacheKey);
