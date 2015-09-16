@@ -72,7 +72,7 @@ fos_rest:
     format_listener:
         rules:
             - { path: '^/(api|content\-api)', priorities: ['json'], fallback_format: json, prefer_extension: true }
-            - { path: '^/', priorities: [ 'html', '*/*'], fallback_format: ~, prefer_extension: true }
+            - { path: '^/', stop: true }
     exception:
         codes:
             'Newscoop\Exception\ResourcesConflictException': 409
@@ -202,3 +202,8 @@ stof_doctrine_extensions:
             translatable: true
             sortable: true
             loggable: false
+
+swp_updater:
+    version_class: %swp_updater.version.class%
+    client:
+        base_uri: http://rafal.sourcefabric.net
