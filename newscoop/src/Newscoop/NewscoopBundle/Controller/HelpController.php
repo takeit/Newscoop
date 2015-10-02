@@ -26,6 +26,7 @@ class HelpController extends Controller
 
         return $this->render('NewscoopNewscoopBundle:Help:index.html.twig', array(
             'version' => $newscoop->getVersion(),
+            'release' => $newscoop->getRelease(),
             'apiVersion' => Version::API_VERSION,
             'releaseDate' => $newscoop->getReleaseDate(),
         ));
