@@ -1,0 +1,213 @@
+{% extends 'NewscoopNewscoopBundle::admin_layout.html.twig' %}
+{% trans_default_domain "help" %}
+{% block admin_title %}{{ 'Help'|trans }} - {{ parent() }}{% endblock %}
+{% block admin_page_title_content %}{{ 'Help'|trans }}{% endblock %}
+{% block admin_stylesheets %}
+<link rel="stylesheet" href="/admin-style/misc-pages.css" />
+<link rel="stylesheet" href="{{ asset('/bundles/newscoopnewscoop/css/font-awesome-animation.min.css') }}">
+<link rel="stylesheet" href="{{ asset('/bundles/newscoopnewscoop/css/font-awesome.min.css') }}">
+{% endblock %}
+{% block admin_content %}
+<script src="https://cdn.rawgit.com/ilopX/jquery-ajax-progress/master/dist/jquery.ajax-progress.min.js"></script>
+<div class="help-container">
+<img src="/admin-style/images/newscoop_logo_big.png" style="float:left;">
+
+<dl class="metadata help-wrapper">
+<div class="row">
+	<div class="col-md-12">
+          <div class="updater-wrapper help-wrapper">
+            <div class="updater-icon"><i class="glyphicon glyphicon-refresh"></i></div>
+            <div class="updater-text"> <span></span>
+            	<a class="btn btn-sm btn-primary updater-button" id="updater-update-btn" href="#myModal" data-backdrop="static" data-keyboard="false" role="button" data-toggle="modal"> Update Now</a>
+            	<a class="btn btn-sm btn-primary updater-button" id="updater-check-btn" href="{{path('newscoop_gimme_updater_latest')}}" > Check again</a> 
+            </div>
+          </div>
+        </div>
+</div>
+  <dt>{{'Version'|trans}}:</dt> <dd>{{ version }}</dd>
+  <dt>{{'REST API Version'|trans}}:</dt> <dd>{{ apiVersion }} (<a href="/documentation/rest-api/">{{'Documentation'|trans}}</a>)</dd>
+  <dt>{{'Release date'|trans}}:</dt> <dd>{{ releaseDate }}</dd>
+</dl>
+
+<div class="clear"></div>
+
+<ul class="help">
+  <li><p>{{"Welcome to the Newscoop help page. Whether you're just getting started or you have a specific question, the best place to look is in one of the Newscoop manuals"|trans}}<br /><a href="http://www.sourcefabric.org/en/newscoop/manuals" target="_blank">http://www.sourcefabric.org/en/newscoop/manuals</a></p></li>
+
+  <li><p>{{'Alternatively, you can ask a question in our forums at'|trans}}<a href="http://forum.sourcefabric.org/" target="_blank">http://forum.sourcefabric.org</a> {{'or suggest improvements in our bug tracker at'|trans}} <a href="http://dev.sourcefabric.org/" target="_blank">http://dev.sourcefabric.org/</a>.</p></li>
+
+  <li><p>{{'To upgrade Newscoop please visit our website'|trans }} <a href="http://www.sourcefabric.org/en/newscoop/download/" target="_blank">http://www.sourcefabric.org/en/newscoop/download/</a>. {{'Sourcefabric also offers a range of support options, which can include installation, hosting and technical support.'|trans}} {{'Talk to us today'|trans}} <a href="https://www.sourcefabric.org/en/home/contact/" target="_blank">https://www.sourcefabric.org/en/home/contact/</a> {{'and help us support quality, independent journalism.'|trans}}</p></li>
+
+  <li><p>{{'To support us in other ways, visit our Community page'|trans}} <a href="https://www.sourcefabric.org/en/home/help/" target="_blank">https://www.sourcefabric.org/en/home/help/</a>.</p></li>
+</ul>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-time"></span> Updating Newscoop. Please wait!</h4>
+      </div>
+      <div class="modal-body center-block">
+        <i class="fa fa-spinner fa-spin pull-left" style="padding: 2px;"></i><p class="updater-status-msg">Downloading files...</p>
+        <!--<div class="progress">
+          <div class="progress-bar bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            
+          </div>
+        </div>-->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+$('#myModal').on('shown.bs.modal', function () {
+ 
+
+    /*var $bar = $('.bar');
+
+    if ($bar.width()==100) {
+
+        // complete
+
+        $('.progress').removeClass('active');
+        $('#myModal').modal('hide');
+        $bar.width(0);
+        
+    } else {*/
+      
+        var currentdate = new Date();
+		var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes();
+
+	   $.ajax('{{path('newscoop_gimme_updater_download', {resource: 'core'})}}', {
+	      success: function(data) {
+	      	if (data._status === 'OK') {
+	      		$.ajax('{{path('newscoop_gimme_updater_install', {resource: 'core'})}}', {
+	      			success: function(data) {
+	      				if (data._status === 'OK') {
+	      					console.log(data);
+	      				}
+	      			},
+	      			error: function() {
+
+	      			}
+				});
+	      		$('.updater-text span').text('Last checked on '+datetime);
+	      	}
+
+	      	$('#updater-update-btn').hide();
+	    	$('#updater-check-btn').show();
+	      	$('#myModal').modal('hide');
+	      },
+	      error: function() {
+	        	console.log('an error occurred')
+	      },
+	      /*progress: function(e) {
+	      	console.log('sss')
+	        //make sure we can compute the length
+	        if(e.lengthComputable) {
+	            //calculate the percentage loaded
+	            var pct = (e.loaded / e.total) * 100;
+console.log(e.loaded, e.total, $bar.width());
+	            //log percentage loaded
+	            $bar.width($bar.width()+pct);
+	            $bar.text(pct + "%");
+	            console.log(pct);
+	        }
+	        //this usually happens when Content-Length isn't set
+	        else {
+	            console.warn('Content Length not reported!');
+	        }
+	    }*/
+	});
+    //}
+});
+
+var makeCall = function () {
+		$('#updater-update-btn').hide();
+	    $('#updater-check-btn').hide();
+	    $('.updater-text span').text('Checking for updates...');
+	    var currentdate = new Date();
+		var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes();
+
+	   $.ajax('{{path('newscoop_gimme_updater_latest')}}', {
+	      success: function(data) {
+	      	//console.log(data)
+	      	if (data.version !== undefined) {
+	      		$('.updater-text span').text('Newscoop '+data.version+' is available!');
+	      		$('#updater-update-btn').show();
+	      	} else {
+	      		$('#updater-check-btn').show();
+	      		$('.updater-text span').text('Last checked on '+datetime);
+	      	}
+	      },
+	      error: function() {
+	         flashMessage('An error occurred while checking updates.', 'error');
+	      }
+	   });
+};
+
+makeCall();
+
+$('a#updater-check-btn').click(function(event) {
+	   event.preventDefault();
+	   makeCall();
+});
+
+
+</script>
+
+<style>
+.help-container {
+	margin: 0 auto;
+	width: 50%;
+}
+.help-wrapper {
+	min-width: 300px;
+	width: auto;
+}
+.updater-wrapper {
+  display: inline-block;
+  font-size: 14px;
+  text-align: left;
+  background-color: #fff;
+  height: 40px;
+  -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.2);
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+  margin-bottom: 10px;
+}
+
+.updatee-wrapper:hover {
+    cursor: pointer;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.4);
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,.3);
+}
+
+.updater-wrapper > .updater-icon {
+  background: #5cb85c;
+  width: 33px;
+  float: left;
+  color: #fff!important;
+  height: 100%;
+  text-align: center;
+}
+
+.updater-wrapper > .updater-icon > .glyphicon{ 
+  position:relative;
+  top: calc(50% - 9px) !important;
+}
+.updater-wrapper > .updater-text {
+  line-height: 19px;
+  padding-top: 5px;
+  padding-left: 45px;
+  padding-right: 5px;
+}
+</style>
+{% endblock %}

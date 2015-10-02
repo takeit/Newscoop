@@ -1,7 +1,12 @@
 <?php
 $translator = \Zend_Registry::get('container')->getService('translator');
-$this->headTitle($translator->trans('Help', array(), 'help').' - Newscoop Admin', 'SET'); ?>
+$this->headTitle($translator->trans('Help', array(), 'help').' - Newscoop Admin', 'SET');
+/*$headStyle = $this->headLink();
+$headStyle->appendStylesheet($this->baseUrl('/admin-style/misc-pages.css'));
+*/
+?>
 
+<div class="help-container">
 <img src="<?php echo $this->baseUrl('/admin-style/images/newscoop_logo_big.png') ?>" style="float:left;">
 
 <dl class="metadata">
@@ -20,4 +25,22 @@ $this->headTitle($translator->trans('Help', array(), 'help').' - Newscoop Admin'
   <li><p><?php echo $translator->trans('To upgrade Newscoop please visit our website', array(), 'help'); ?> <a href="http://www.sourcefabric.org/en/newscoop/download/" target="_blank">http://www.sourcefabric.org/en/newscoop/download/</a>. <?php echo $translator->trans('Sourcefabric also offers a range of support options, which can include installation, hosting and technical support.', array(), 'help'); ?> <?php echo $translator->trans('Talk to us today', array(), 'help'); ?> <a href="https://www.sourcefabric.org/en/home/contact/" target="_blank">https://www.sourcefabric.org/en/home/contact/</a> <?php echo $translator->trans('and help us support quality, independent journalism.', array(), 'help'); ?></p></li>
 
   <li><p><?php echo $translator->trans('To support us in other ways, visit our Community page', array(), 'help'); ?> <a href="https://www.sourcefabric.org/en/home/help/" target="_blank">https://www.sourcefabric.org/en/home/help/</a>.</p></li>
-</ol>
+</ul>
+</div>
+<div class="updater-container">
+	<h2>Newscoop Updates</h2>
+	<div><p>Last checked on 1 October 2015 at 15:18.</p> <button class="btn btn-sm btn-default">Check again.</button></div>
+	<br>
+	<p>An updated version of Newscoop is available.</p>
+	<button class="btn btn-sm btn-default">Update now</button>
+</div>
+
+<style>
+.help-container {
+	float:left;
+	margin-right: 30px;
+}
+.updater-container {
+
+}
+</style>
