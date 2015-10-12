@@ -16,7 +16,7 @@ newscoop_gimme_updater_get:
           _method: GET
 
 newscoop_gimme_updater_install:
-    path: /api/updates/install/{resource}.{_format}
+    path: /api/updates/{resource}.{_format}
     defaults:
         _controller: SWPUpdaterBundle:Updater:install
         _format: json

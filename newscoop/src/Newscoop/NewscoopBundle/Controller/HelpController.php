@@ -9,7 +9,6 @@ namespace Newscoop\NewscoopBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Request;
 use Newscoop\Version;
 
 /**
@@ -18,17 +17,22 @@ use Newscoop\Version;
 class HelpController extends Controller
 {
     /**
-     * @Route("/admin/help/")
+     * @Route("/admin/application/help/")
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         $newscoop = new \CampVersion();
+        $preferencesService = $this->get('preferences');
+        $entityManager = $this->get('em');
+        $defaultClientName = 'newscoop_'.$preferencesService->SiteSecretKey;
+        $client = $entityManager->getRepository('\Newscoop\GimmeBundle\Entity\Client')->findOneByName($defaultClientName);
 
         return $this->render('NewscoopNewscoopBundle:Help:index.html.twig', array(
             'version' => $newscoop->getVersion(),
             'release' => $newscoop->getRelease(),
             'apiVersion' => Version::API_VERSION,
             'releaseDate' => $newscoop->getReleaseDate(),
+            'clientId' => $client->getPublicId(),
         ));
     }
 }
