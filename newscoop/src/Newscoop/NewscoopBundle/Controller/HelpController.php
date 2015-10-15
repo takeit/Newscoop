@@ -25,7 +25,9 @@ class HelpController extends Controller
         $preferencesService = $this->get('preferences');
         $entityManager = $this->get('em');
         $defaultClientName = 'newscoop_'.$preferencesService->SiteSecretKey;
-        $client = $entityManager->getRepository('\Newscoop\GimmeBundle\Entity\Client')->findOneByName($defaultClientName);
+        $client = $entityManager->getRepository('\Newscoop\GimmeBundle\Entity\Client')->findOneBy(array(
+            'name' => $defaultClientName,
+        ));
 
         return $this->render('NewscoopNewscoopBundle:Help:index.html.twig', array(
             'version' => $newscoop->getVersion(),
