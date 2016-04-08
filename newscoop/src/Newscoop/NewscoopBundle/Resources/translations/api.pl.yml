@@ -4,7 +4,7 @@
 'Filter not saved': 'Filtr nie został zapisany'
 'Not a color': 'Wartość nie jest kolorem.'
 'No such field': 'Nie ma takiego pola'
-'Color saved': 'Kolor zapisany'
+'Color saved': 'Kolor został zapisany'
 'Color not saved': 'Kolor nie został zapisany'
 'Topic created': 'Temat został utworzony'
 'The topic name is already in use by another topic.': 'Ta nazwa jest już wykorzystywana przez inny temat.'
@@ -26,7 +26,7 @@ Homepage: 'Strona domowa'
 'Show original map': 'Pokaż oryginalną mapę'
 'The uploaded archive does not contain an valid newscoop plugin.': 'Dodane archiwum nie zawiera ważnych pluginów Newscoop'
 Map: Mapa
-Center: Centruj
+Center: Wyśrodkuj
 Title: Tytuł
 'Invalid security token.': 'Niepoprawny token bezpieczeństwa.'
 'Callback $1 is not callable.': 'Callback $1 nie jest w zasięgu.'
@@ -39,18 +39,19 @@ Title: Tytuł
 'Article Number': 'Numer artykułu'
 'Access denied.': 'Dostęp zabroniony.'
 'Publish with issue': 'Opublikuj z wydaniem'
+'Article "$1" not processed': null
 unknown: nieznane
 Switch: Przełącznik
 Numeric: Liczbowy
 'The uploaded file format is unsupported.': 'Format wgranego pliku nie jest obsługiwany.'
 'The following fields are mandatory:': 'Poniższe pola są obowiązkowe:'
 'Missing value for $1': 'Brakująca wartość dla $1'
-'Manage Plugins': 'Zarządzanie Pluginami'
+'Manage Plugins': 'Zarządzanie Wtyczkami'
 '* Marked fields are mandatory.': '* Oznaczone pola są obowiązkowe.'
 '$1 is of type $2': '$1 jest typu $2'
 'Invalid resize width/height.': 'Niewłaściwe rozmiary długości/wysokości.'
 'Image type $1 is not supported.': 'Typ zdjęcia $1 nie jest obsługiwany.'
-'The file uploaded is not an image.': 'Dodany plik nie jest obrazem.'
+'The file uploaded is not an image.': 'Przesłany plik nie jest obrazem.'
 'Could not delete record from the database.': 'Nie można usunąć rekordu z bazą danych.'
 'template path': 'ścieżka szablonu'
 'short names': 'krótkie nazwy'

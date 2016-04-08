@@ -413,6 +413,7 @@ class Article extends DatabaseObject
             // Remove any translations that are not requested to be translated.
             if (is_array($p_copyTranslations)) {
                 $tmpArray = array();
+
                 foreach ($copyArticles as $tmpArticle) {
                     if (in_array($tmpArticle->m_data['IdLanguage'], $p_copyTranslations)) {
                         $tmpArray[] = $tmpArticle;
@@ -423,6 +424,12 @@ class Article extends DatabaseObject
         } else {
             $copyArticles[] = $this;
         }
+
+        // If there are no articles to be copied return empty array
+        if (count($copyArticles) === 0) {
+            return $copyArticles;
+        }
+
         $newArticleNumber = $this->__generateArticleNumber();
 
         // geo-map copying
@@ -432,11 +439,11 @@ class Article extends DatabaseObject
                 $map_user_id = $this->m_data['IdUser'];
             }
 
-            $map_artilce_src = (int) $this->m_data['Number'];
-            $map_artilce_dest = (int) $newArticleNumber;
+            $map_artilce_src = (int)$this->m_data['Number'];
+            $map_artilce_dest = (int)$newArticleNumber;
             $map_translations = array();
             foreach ($copyArticles as $copyMe) {
-                $map_translations[] = (int) $copyMe->m_data['IdLanguage'];
+                $map_translations[] = (int)$copyMe->m_data['IdLanguage'];
             }
             Geo_Map::OnArticleCopy($map_artilce_src, $map_artilce_dest, $map_translations, $map_user_id);
         }
@@ -570,7 +577,12 @@ class Article extends DatabaseObject
         }
         $success = false;
         if (count($columns) > 0) {
-            $success = $this->update($columns);
+            try {
+                $success = $this->update($columns);
+            } catch (\Exception $e) {
+                $success = false;
+            }
+
             if ($success) {
                 $this->setWorkflowStatus($this->getWorkflowStatus());
                 $g_ado_db->Execute('LOCK TABLES Articles WRITE');
@@ -578,6 +590,9 @@ class Article extends DatabaseObject
                 $this->setProperty('ArticleOrder', $articleOrder);
                 $g_ado_db->Execute('UNLOCK TABLES');
                 $this->positionAbsolute(1);
+            } else {
+                $logtext = $translator->trans('Article "$1" not processed', array('$1' => $this->getTitle()), 'api');
+                Log::ArticleMessage($this, $logtext);
             }
         }
 
