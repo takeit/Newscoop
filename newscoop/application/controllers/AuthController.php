@@ -51,21 +51,6 @@ class AuthController extends Zend_Controller_Action
         return $authenticationException;
     }
 
-    public function logoutAction()
-    {
-        if ($this->auth->hasIdentity()) {
-            $this->auth->clearIdentity();
-        }
-
-        setcookie('NO_CACHE', 'NO', time()-3600, '/', '.'.$this->extractDomain($_SERVER['HTTP_HOST']));
-        $url = $this->_getParam('url');
-        if (!is_null($url)) {
-            $this->_redirect($url);
-        }
-
-        $this->_helper->redirector->gotoUrl('?t='.time());
-    }
-
     public function socialAction()
     {
         $preferencesService = \Zend_Registry::get('container')->getService('system_preferences_service');
