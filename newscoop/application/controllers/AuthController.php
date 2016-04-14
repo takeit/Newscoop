@@ -21,7 +21,7 @@ class AuthController extends Zend_Controller_Action
     public function indexAction()
     {
         if ($this->auth->hasIdentity()) {
-            $this->_helper->redirector('index', 'index');
+            $this->_helper->redirector('index', 'dashboard');
         }
 
         $translator = Zend_Registry::get('container')->getService('translator');
@@ -170,23 +170,23 @@ class AuthController extends Zend_Controller_Action
         $user = $this->_helper->service('user')->find($this->_getParam('user'));
         if (empty($user)) {
             $this->_helper->flashMessenger(array('error', $translator->trans('User not found.')));
-            $this->_helper->redirector('index', 'index', 'default');
+            $this->_helper->redirector('password-restore', 'auth');
         }
 
         if (!$user->isActive()) {
             $this->_helper->flashMessenger(array('error', $translator->trans('User is not active user.')));
-            $this->_helper->redirector('index', 'index', 'default');
+            $this->_helper->redirector('password-restore', 'auth');
         }
 
         $token = $this->_getParam('token', false);
         if (!$token) {
             $this->_helper->flashMessenger(array('error', $translator->trans('No token provided.')));
-            $this->_helper->redirector('index', 'index', 'default');
+            $this->_helper->redirector('password-restore', 'auth');
         }
 
         if (!$this->_helper->service('user.token')->checkToken($user, $token, 'password.restore')) {
             $this->_helper->flashMessenger(array('error', $translator->trans('Invalid token.')));
-            $this->_helper->redirector('index', 'index', 'default');
+            $this->_helper->redirector('password-restore', 'auth');
         }
 
         $form = new Application_Form_PasswordRestorePassword();
