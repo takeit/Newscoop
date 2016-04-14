@@ -37,6 +37,7 @@ class FrontendLogoutSuccessHandler extends AbstractLogoutHandler
      */
     public function onLogoutSuccess(Request $request)
     {
+        $this->setTargetUrl($request);
         $zendAuth = \Zend_Auth::getInstance();
         $zendAuth->clearIdentity();
         // logout from OAuth
@@ -49,5 +50,16 @@ class FrontendLogoutSuccessHandler extends AbstractLogoutHandler
         $this->unsetNoCacheCookie($request);
 
         return parent::onLogoutSuccess($request);
+    }
+
+    private function setTargetUrl(Request $request)
+    {
+        if ($request->query->has('url')) {
+            $this->targetUrl = $request->query->get('url');
+        }
+
+        if ($request->query->has('_target_path')) {
+            $this->targetUrl = $request->query->get('_target_path');
+        }
     }
 }
