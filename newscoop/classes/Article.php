@@ -591,7 +591,6 @@ class Article extends DatabaseObject
                 $g_ado_db->Execute('UNLOCK TABLES');
                 $this->positionAbsolute(1);
             } else {
-                $translator = \Zend_Registry::get('container')->getService('translator');
                 $logtext = $translator->trans('Article "$1" not processed', array('$1' => $this->getTitle()), 'api');
                 Log::ArticleMessage($this, $logtext);
             }
@@ -794,8 +793,13 @@ class Article extends DatabaseObject
 
         $webcode = $article->getWebcodeEntity();
 
-        $em->remove($webcode);
-        $em->flush();
+        if (null !== $webcode) {
+            try {
+                $em->remove($webcode);
+                $em->flush();
+            } catch(\Exception $e) {}
+        }
+
         $em->detach($article);
 
         $tmpObj = clone $this; // for log
